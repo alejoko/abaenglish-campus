@@ -21,7 +21,6 @@ var studentActions  = {
 			var sSectionUnit = ABA_env.getSection();
 			//Adds data from the call to the options object
 			studentActions.config = $.extend(studentActions.config, config);
-			console.log("unit instanciada con : "+studentActions.config.identifier);
 			//Set-Up main properties
 			studentActions.setUpGadgetIdentifier(studentActions.config.identifier);
 			// attach listener on start building;
@@ -43,11 +42,8 @@ var studentActions  = {
 		 */
 		
 		setUpGadgetIdentifier: function (id){
-			console.log("setupGadget");
-			console.log(id);
 			if (studentActions.config.identifier !== null){
 				studentActions.$gadget = $("#" + id);
-				console.log(studentActions.$gadget);
 			}else{
 				studentActions.$gadget = $("body");
 			}
@@ -141,7 +137,6 @@ var studentActions  = {
 			$target= null;
 			
 			var sRoleRecord  	= ABA_env.getRoleRecord();
-			console.log("sRoleRecord:"+sRoleRecord);
 			
 			$target = studentActions.$gadget.find("[role='"+sRoleRecord+"']");
 			$target.removeClass();
@@ -151,7 +146,6 @@ var studentActions  = {
 			var sRolePlay  		= ABA_env.getRolePlay();
 			
 			$.each(sRolePlay, function(){
-				console.log("sRolePlay:"+this);
 				$target = studentActions.$gadget.find("[role='"+this+"']");
 				$target.removeClass();
 				$target.addClass(studentActions.config.normalFont);
@@ -236,23 +230,18 @@ var studentActions  = {
 		},
 		loadAllTooltips: function(){
 			$.each(studentActions.config.tooltipParams, function(){
-				console.log(this);
 				studentActions.$gadget.find("."+this.tooltipStarterClass).tooltp_init(this);
 			});
 		},
 		manageRolePlayProcess: function(event){
 			var $target = $(event.target);
 			var $buttonPress =  $target.closest(".block_buttons");
-			console.log("manageRolePlayProcess");
-			console.log($buttonPress);
 			var sAction = $buttonPress.attr("action");
-			console.log(sAction);
 			ABA_utils.cancelBubble(event);
 		
 			$otherButtons = studentActions.$gadget.find(".block_buttons").not($buttonPress);
 			switch(sAction){
 				case "startRole":
-					console.log("startRole");
 					$buttonPress.addClass(studentActions.config.selectedClass);
 					studentActions.disableBlockTextButton($otherButtons);
 					studentActions.nextStepRolePlayProccess();
@@ -261,7 +250,6 @@ var studentActions  = {
 					$buttonPress.find("[text='stop']").show();
 					break;
 				case "stopRole":
-					console.log("stopRole");
 					$buttonPress.removeClass(studentActions.config.selectedClass);
 					studentActions.enableBlockTextButton($otherButtons);
 					studentActions.stopRolePlayProccess();
@@ -270,7 +258,6 @@ var studentActions  = {
 					$buttonPress.find("[text='start']").show();
 					break;
 				case "startPlay":
-					console.log("startPlay");
 					$buttonPress.addClass(studentActions.config.selectedClass);
 					studentActions.disableBlockTextButton($otherButtons);
 					studentActions.nextStepRolePlayProccess();
@@ -279,7 +266,6 @@ var studentActions  = {
 					$buttonPress.find("[text='stop']").show();
 					break;
 				case "stopPlay":
-					console.log("stopPlay");
 					$buttonPress.removeClass(studentActions.config.selectedClass);
 					studentActions.enableBlockTextButton($otherButtons);
 					studentActions.stopRolePlayProccess();
@@ -291,21 +277,15 @@ var studentActions  = {
 			
 		},
 		disableBlockTextButton: function($target){
-			console.log("target");
-			console.log($target);
 			
 			if(!$target.hasClass("disable")){
 				var sAction = $target.attr("action");
 				$target.attr("action","none");
 				$target.attr("memoaction",sAction);
 				$target.addClass("disable");
-				console.log("disable");
-				console.log(sAction);
 			}
 		},
 		enableBlockTextButton: function($target){
-			console.log("target");
-			console.log($target);
 			
 			var isAnyBlockRecorded = false;
 			var $blockRecorded = studentActions.$gadget.find(".recordRole.rolePlayStepComplete");
@@ -323,9 +303,7 @@ var studentActions  = {
 					
 				$target.attr("action",sAction);
 				$target.removeClass("disable");
-				
-				console.log("enable");
-				console.log(sAction);
+
 			} 
 			
 		},
@@ -338,8 +316,6 @@ var studentActions  = {
 				
 					var $workingListener = studentActions.$gadget.find(".listenerTooltip");
 					var $nextStep = studentActions.$gadget.find("[role]").not("."+studentActions.config.classStepComplete).eq(0);
-					console.log("first element");
-					console.log($nextStep);
 					var sRole = $nextStep.attr("role");
 					
 					if(sRole!=undefined){
@@ -350,8 +326,6 @@ var studentActions  = {
 									case "RoleButton":
 											
 										if ($nextStep.hasClass(this.tooltipStarterClass)){
-											console.log("mached tooltip params!!!!!!");
-											console.log(this);
 											
 											var extendedOptions = {};
 											extendedOptions.serverOriginAudio = "demo";
@@ -363,9 +337,6 @@ var studentActions  = {
 									case "playButton":
 										
 										if(this.tooltipStarterClass == "playRole"){
-											console.log("mached tooltip params!!!!!!");
-											console.log(this);
-											
 											var extendedOptions = {};
 											
 											if($nextStep.hasClass(studentActions.config.recordRoleClass)){
@@ -385,9 +356,6 @@ var studentActions  = {
 						
 						$nextStep.click();
 						$nextStep.addClass(studentActions.config.classStepComplete);
-						console.log("current listener");
-						console.log($workingListener);
-						console.log("next step");
 						$workingListener.tooltp_Unbind();
 						
 					} else {
@@ -416,16 +384,13 @@ var studentActions  = {
   				if (sSectionUnit=="ROLEPLAY"){
   					sSectionUnit="ROLEPLAY_SELECT";
   				}
-  				console.log("breadcrumb:"+sSectionUnit);
 	  			masterActions.setStepBreadCrumb(sSectionUnit);
 	  			$.unsubscribe("/unitEvents/unitReady");
 			});	
-				console.log("BreadCrumb listening to UNIT READY");
 		},
 	
 		notifyUnitReady: function(){
 			$.publish("/unitEvents/unitReady"); 
-			console.log("UNIT READY -----> FIRE!!!!");
 		},
 		
 		deleteInputKeyboardEvent: function(event){
@@ -446,11 +411,9 @@ var studentActions  = {
 					
 					switch (sSection){
 						case "DICTATION":
-							console.log("send info validate DICTATION");
 							PROXY_env.HTMLSetDictationItemValue( inputId , filename , isTextOK, $inputTarget.val() );
 							break;
 						case "WRITING":
-							console.log("send info validate WRITING");
 							PROXY_env.HTMLSetExerciseItemValue( inputId ,filename, isTextOK, $inputTarget.val() );
 							break;
 					}
@@ -506,9 +469,7 @@ var studentActions  = {
 		},
 		cueStopHearing: function(){
 			// current link active and rebuild memo
-			console.log("trying to cue...");
 			var $tooltipHolders = studentActions.$gadget.find("."+studentActions.config.generalTooltipClass);
-			console.log($tooltipHolders);
 			
 			$tooltipHolders.each(function(){
 				
@@ -520,14 +481,10 @@ var studentActions  = {
 				var sTooltipClicked = memo.tooltipCLicked;
 				var sCompareState = memo.compareState;
 				$store.data("cueFromServer",true);
-				
-				console.log(memo.tooltipCLicked);
-				
+								
 				// rebuild target and event for call function event
 				if ( (memo.tooltipCLicked!=null) && (memo.tooltipCLicked!=undefined) ) {
 					$target = $(this).find("#"+memo.tooltipCLicked);
-					console.log("make click on:");
-					console.log($target);
 					$target.click();
 					if(sTooltipClicked=="compare" && sCompareState!="step2"){
 						iconTimeoutCompare = setTimeout(function(){$target.click();}, 100);
@@ -538,12 +495,10 @@ var studentActions  = {
 		},
 		
 		startPlay: function(filename,audioType,listenType){
-			console.log("playing:"+filename+" "+audioType+"  "+listenType);
 			PROXY_env.HTMLListenElement(filename,audioType,listenType);
 		},
 		
 		stopElement: function(inNotify){
-			console.log("listen call stop");
 			PROXY_env.HTMLStopElement(inNotify);
 		},
 		
@@ -556,8 +511,6 @@ var studentActions  = {
 		},
 		
 		loadMemoAudioListened: function(data){
-			console.log("loadAudioListened");
-			console.log(data);
 			studentActions.setUpGadgetIdentifier(studentActions.config.identifier);
 			var sSection =  ABA_env.getSection();
 			var nQuest = studentActions.getNumberQuestions();
@@ -566,7 +519,6 @@ var studentActions  = {
 					var memo = studentActions.$gadget.find("[filename='"+this+"']").data();
 					if(memo!=undefined){
 						var linkId = studentActions.$gadget.find("[filename='"+this+"']").attr("id");
-						console.log("audiolistened target.memo!."+this);
 					
 						switch(sSection){
 							case "WRITING":
@@ -609,8 +561,6 @@ var studentActions  = {
 		},
 		
 		loadMemoAudioRecorded: function(data){
-				console.log("loadAudioRecoreded");
-				console.log(data);
 				studentActions.setUpGadgetIdentifier(studentActions.config.identifier);
 				var sSection =  ABA_env.getSection();
 				var nQuest = studentActions.getNumberQuestions();
@@ -620,7 +570,6 @@ var studentActions  = {
 						var memo = studentActions.$gadget.find("[filename='"+this+"']").data();
 						if(memo!=undefined){
 							var linkId = studentActions.$gadget.find("[filename='"+this+"']").attr("id");
-							console.log("audiorecorded target.memo!."+this);
 							
 							switch(sSection){
 								case "ROLEPLAY":
@@ -653,8 +602,6 @@ var studentActions  = {
 		},
 		
 		loadMemoInputText: function(data){
-			console.log("loadMemoDictation");
-			console.log(data);
 		
 			studentActions.setUpGadgetIdentifier(studentActions.config.identifier);
 			$.each(data.Values, function(){
@@ -671,8 +618,6 @@ var studentActions  = {
 		},
 		
 		loadMemoInputTextFalse: function(data){
-			console.log("loadMemoDictationFalse");
-			console.log(data);
 			studentActions.setUpGadgetIdentifier(studentActions.config.identifier);
 			$.each(data.Values, function(){
 				var sFile = this.file;
@@ -689,8 +634,6 @@ var studentActions  = {
 		},
 		
 		loadMemoWritingInputText: function(data){
-			console.log("loadMemoWriting");
-			console.log(data);
 			studentActions.setUpGadgetIdentifier(studentActions.config.identifier);
 			$.each(data.Values, function(){
 				var sFile = this.file;
@@ -708,8 +651,6 @@ var studentActions  = {
 		},
 		
 		loadMemoWritingInputTextFalse: function(data){
-			console.log("loadMemoWritingFalse");
-			console.log(data);
 			studentActions.setUpGadgetIdentifier(studentActions.config.identifier);
 			$.each(data.Values, function(){
 				var sFile = this.file;
@@ -728,8 +669,6 @@ var studentActions  = {
 		
 		
 		loadMemoDataMinitest: function(data){
-			console.log("loadMemoDataMinitests");
-			console.log(data);
 			studentActions.setUpGadgetIdentifier(studentActions.config.identifier);
 			var quest = data.Values[0].responses.split(",");
 
@@ -738,7 +677,6 @@ var studentActions  = {
 			$.each(quest, function(index){
 				var nQuest = $collectionQuest.eq(index);
 				var $target= nQuest.find("input[value='"+this+"']");
-				console.log(nQuest);
 				var memo = $target.data();
 				var $store = $target;
 //				alert(this);
@@ -776,7 +714,6 @@ var studentActions  = {
 			var sIdPaginate = $target.attr("id");
 			var sPage = $target.attr("page"); 
 			
-			console.log("NEXT PAGE: >>>"+sPage);
 			switch(sIdPaginate){
 				case "previous":
 				case "next":
@@ -817,7 +754,6 @@ var studentActions  = {
 				var $target = $(event.target);
 				var sIdPaginate = $target.attr("id");
 				var sPage = $target.attr("page"); 
-				console.log("NEXT PAGE: >>>"+sPage);
 				switch(sIdPaginate){
 					case "previous":
 					case "next":

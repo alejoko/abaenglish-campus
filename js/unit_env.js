@@ -104,7 +104,6 @@ var PROXY_env ={
 	},
 	HTMLNewPageInicial:function(){ // se invoca cuando se carga la pagina del curso para pedir los datos de actualización // 
 		var url_aba = "http://www.abaenglish.com/transactions/wgetScormAllOnloadWithEval.php?id_learner="+this.getIdLearner()+"&unit="+this.getUnit()+"&page="+this.getPage()+"&section="+this.getSection()+"&login="+this.getUsernameProxy();
-		console.log(url_aba);
 		this.SWFProxy(url_aba);
 	},
 	HTMLStopSituation:function(){
@@ -183,4 +182,3 @@ var PROXY_env ={
           this.SWFProxy(url_aba);
   	}
 };
-console.log("unit.env");
