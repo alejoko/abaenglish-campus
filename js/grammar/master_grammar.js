@@ -3,19 +3,15 @@ function callConnectionOff(){
 	masterActions.connectionOff();   
 }
 function callConnectionOn(){
-    console.log("connectiion and flash ready");
 	masterActions.connectionOn();
 }
 function callLogin(inResult){
     if(inResult != ""){
     	var result=inResult.split(":");
-    	console.log("***************** ID *********************"+result[0]);
         ABA_env.setIdLearner(result[0]);
     }
-    console.log("login ready");
 }
 function callConfirmed(){
-	console.log("callConfirmed");
 	masterActions.hideAbaPlayer();
 	ABA_env.getTimerUnitByUser();
 	masterActions.notyfyLoginReady();
@@ -90,11 +86,9 @@ var masterActions = {
 		 * Load the Overserver events related to this gadget
 		 */
 		loadObserverEvents: function(){
-			console.log("loadObserver");
 			$.subscribe("/masterEvents/objFlashReady", function(event) { 
 				var $store = masterActions.$gadget;
 				$store.data("objectFlashReady",true);
-				console.log("FIRE!!!!");
 				initUnit();
 			});	
 		},
@@ -138,7 +132,6 @@ var masterActions = {
 		
 		jumpSection: function(sSection){
 			var arrBreadCrumb  = ABA_env.getFirstPages();
-			console.log("targetBreadCrum:"+sSection);
 			if( sSection in arrBreadCrumb ){
 				masterActions.loadUnit(arrBreadCrumb[sSection]);
 			} else {
@@ -183,12 +176,10 @@ var masterActions = {
 		},
 		
 		connectionOff: function(){
-			console.log("connectionoff");
 			 masterActions.$gadget.find("#frameNoConnection").show();
 		},
 		
 		connectionOn: function(){
-			console.log("connectionon");
 			 masterActions.$gadget.find("#frameNoConnection").hide();
 		},
 		
@@ -204,7 +195,6 @@ var masterActions = {
 			 masterActions.$gadget.find("#videoHolder").css("height","0");
 			 masterActions.$gadget.find("#ABAPlayer").attr("height","0");
 			 masterActions.$gadget.find("#ABAPlayer").css("height","0");
-			console.log("deleteplayer");
 		},
 		
 		showPermissionConfirmation: function(){
@@ -214,7 +204,6 @@ var masterActions = {
 			 masterActions.$gadget.find("#ABAPlayer").attr("height","110px").attr("width","180px");
 			 masterActions.$gadget.find(masterActions.config.videoHolder).addClass("microPermissionHolder");
 			 masterActions.$gadget.find("#ABAPlayer").addClass("microPermission");
-			console.log("showingconfirmation");
 		},		
 		
 		loadFlashObject: function(){
@@ -253,12 +242,8 @@ var masterActions = {
 		},
 		
 		loadInfoProgressBar: function(data){
-				console.log("loadInfoProgressBar");
-				console.log(data);
 				studentActions.setUpGadgetIdentifier(studentActions.config.identifier);
 				$.each(data.Values, function(index){
-					console.log("new bar");
-					console.log(this);
 					var graphicValue = Math.round( this / 2 );
 					masterActions.$gadget.find(".progressBar").eq(index).css("width",graphicValue);
 				});	
@@ -278,7 +263,6 @@ var masterActions = {
 			
 			delete studentActions;
 			
-			console.log("jump!!!!-->"+sAction);
 			$window.load(sAction,
 					  function(response, status, xhr){
 						  	switch(status){
@@ -287,7 +271,6 @@ var masterActions = {
 						  		break;
 						  		default:
 						  			var memo =   masterActions.$gadget.data();
-						  			console.log("!!!!!!!!!!!!!JUMPED!!!!!!!!!!!"+sPage+"");
 						  			if(memo.objectFlashReady){
 						  				initUnit();
 						  			}

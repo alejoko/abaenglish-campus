@@ -47,7 +47,6 @@
 					opts.enter.call(this);
 				
 					tiptip_content.html(org_title);
-					console.log(tiptip_content);
 					tiptip_holder.hide().removeAttr("class").css("margin","0");
 					
 					var top = parseInt(org_elem.offset()['top']);
@@ -98,7 +97,6 @@
 					
 					
 					if(timeout){ clearTimeout(timeout); }
-					console.log("enter");
 						timeout = setTimeout(function(){ tiptip_holder
 															.stop(true,true)
 															.css('opacity', 0)

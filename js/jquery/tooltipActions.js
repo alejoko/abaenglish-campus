@@ -26,7 +26,6 @@
 			config.gadget = $gadget;
 	
 			$(this).tooltp_loadEvents($gadget,$(this),config);
-			console.log("whatss happen");
 			
 			// save section in notebbok item
 			$notebook = $gadget.find("#notebook");
@@ -37,9 +36,6 @@
 				$store = $(this);
 				$store.data(config);
 				memo  = $store.data();
-				console.log("example of memo-------------");
-				console.log($(this));
-				console.log(memo);
 			});
 			
 		},
@@ -48,8 +44,6 @@
 		 * Set-Up of the gadget identifier
 		 */
 		tooltp_setUpGadgetIdentifier: function (id){
-			console.log("setupGadget");
-			console.log(id);
 			return $("#" + id);
 		},
 		
@@ -106,7 +100,6 @@
 		 * Manage the effect related to the cliked blinking Tooltip Buttons
 		 */
 		tooltp_startBlinkTooltipBtns: function(event,config){
-			console.log("blink");
 			var $target = $(event.target);
 			$target.parent().removeClass("buttonTooltip_audio_hold");
 			$target.parent().addClass("buttonTooltip_rollover");
@@ -123,7 +116,6 @@
 		 * Manage the effect related to the cliked blinking Tooltip Buttons
 		 */
 		tooltp_stopBlinkTooltipBtns: function($target, event, config){
-			console.log("stopBlink");
 			var linkId = $("#"+config.idTooltipHolder).attr("linkId");
 			var $store = $("#"+linkId);
 			var memo = $("#"+linkId).data();
@@ -207,7 +199,6 @@
 		 * Manage the events related to the Tooltip Buttons
 		 */
 		tooltp_manageTooltipBtns: function(event){
-			console.log("MANAGE BUTTONS!!!!!!");
 			var $target = $(event.target);
 			// read tooltip data link attached
 			var $tooltipHolder = $target.closest(".tip_top");
@@ -215,8 +206,6 @@
 			var linkId = $tooltipHolder.attr("linkid");
 			var audioType = $tooltipHolder.attr("audiotype");
 			var okText = $tooltipHolder.attr("okText");
-			console.log("********!!!!!!!!!!**********");
-			console.log(linkId);
 			var typeButton = $target.attr("id");
 			var $store = $("#"+linkId);
 			var memo = $("#"+linkId).data();
@@ -224,13 +213,8 @@
 			var isAnyClicked  = null;
 			if( (memo.cueFromServer == null) || (memo.cueFromServer == undefined) ){
 				$store.data("cueFromServer",false);
-				console.log("NOT CUED FROM THE SERVER !!!!");
 			}
-			
-			console.log("under this: log the linkid and the store");
-			console.log(linkId);
-			console.log($store);
-			
+						
 			ABA_utils.cancelBubble(event);
 			switch (typeButton){
 				case "hear":
@@ -246,7 +230,6 @@
 								$store.data("tooltipCLicked","record");
 								$store.data("cueFromServer",false);
 									memo.gadget.find("#"+memo.idTooltipHolder).addClass("keepAlive");
-									console.log("recording...");
 									$.fn.tooltp_startBlinkTooltipBtns(event, memo);
 									iconTimeoutRecord = setTimeout(function(){$target.click();}, 12000);
 									studentActions.startRecord(filename);
@@ -268,7 +251,6 @@
 					break;
 					
 				case "compare":
-					console.log(sSection+"+"+typeButton);
 						switch(sSection){
 								case "DICTATION":
 								case "WRITING":
@@ -341,8 +323,6 @@
 						
 						$store.data("tooltipCLicked",typeButton);
 						$store.data("cueFromServer",false);
-							console.log("hearing...");
-	//						iconTimeoutHear = setTimeout(function(){$target.click();}, 60000);
 							$.fn.tooltp_startBlinkTooltipBtns(event, memo);
 							//TODO: diferent "demo" or "student" depends of record or play 
 							iconTimeoutHear = setTimeout(function(){$target.click();}, 10000);
@@ -376,7 +356,6 @@
 							switch(sSection){
 								case "GRAMMAR":
 								case "WRITING":
-									console.log("notifify to server: audio hear");
 									studentActions.stopElement(true);
 									memo.gadget.find("#"+linkId).not("input").css("text-decoration","underline");
 									$store.data("hearMade",true);
@@ -392,7 +371,6 @@
 									}
 								break;
 								default: 
-									console.log("DON'T notifify HEAR !!!");
 									studentActions.stopElement(false)
 									$store.data("hearMade",true);
 								break;
@@ -416,8 +394,6 @@
 			var linkId 			= $tooltipHolder.attr("linkid");
 			var audioType 		= $tooltipHolder.attr("audiotype");
 			var isClickedItem 	= null;
-			console.log("MEMORY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-			console.log(memo);
 			
 			isClickedItem = memo.isClickedCompare;
 			
@@ -432,21 +408,16 @@
 						$store.data("cueFromServer",false);
 						memo.gadget.find("#"+memo.idTooltipHolder).addClass("keepAlive");
 						
-							console.log("compare....");
 							switch(memo.compareState){
 								case "step1":
-									console.log("compares1");
 									$store.data("compareState","step2");
 									$.fn.tooltp_startBlinkTooltipBtns(event, memo);
 									iconTimeoutHear = setTimeout(function(){$target.click();}, 10000);
 									studentActions.startPlay(filename, audioType, "demo");
 									break;
 								case "step2":
-									console.log("compares2");
 									break;
 								default:
-									console.log("comparedefault");
-									console.log($store);
 									$store.data("compareState","step1");
 									$.fn.tooltp_startBlinkTooltipBtns(event, memo);
 									iconTimeoutHear = setTimeout(function(){$target.click();}, 10000);
@@ -542,7 +513,6 @@
 			var $store = $target;
 			var memo = $store.data();
 			$.fn.tooltp_loadTooltip(event, memo.gadget);
-			console.log("attach keypress event to input:"+$target.attr("id"));
 			$target.unbind('keypress'); 
 			$target.bind('keypress',  function(event) { 	
 						$.fn.tooltp_loadInputKeyboardEvent(event,memo); 
@@ -570,17 +540,10 @@
 				 break;
 			 }
 			
-			console.log("linkid:"+linkId);
-			console.log("wrapper:"+memo.idTooltipWrapper);
-			console.log("idTooltipHolder:"+memo.idTooltipHolder);
-			console.log("idTooltipContent:"+memo.idTooltipContent);
-			
 			var html_content = $gadget.find(memo.idTooltipWrapper).html();
-			console.log(html_content);
 			
 				// delete current tooltip
 				$.fn.tooltp_deleteTooltip($notebook);
-				console.log("loadTooltip");
 				$target.tipTip({
 						maxWidth: "auto", 
 						edgeOffset: memo.offset, 
@@ -626,7 +589,6 @@
 		 * manage press keyboard event
 		 */
 		tooltp_loadInputKeyboardEvent: function(event, memo){
-			console.log("action if keypress");
 				var code = (event.keyCode ? event.keyCode : event.which);
 				var $target = $(event.target);
 				var linkId=$target.attr("id");
@@ -656,17 +618,12 @@
 		 */
 		tooltp_deleteTooltip: function($widget){
 			var linkId = $widget.find(".workingTooltip").attr("id");
-			console.log($widget);
-			console.log("searchikng linkid of current tooltip: "+linkId);
 			$element =  $("#"+linkId);
 			var $store = $element;
 			var memo = $store.data();
 			
 			if (linkId != undefined) {
-				console.log("trying to to delete: "+memo.idTooltipHolder);
-				console.log(linkId);
 				// TURN OFF BUTTONS IN ACTION
-				console.log(memo.tooltipCLicked);
 				if ( memo.tooltipCLicked != null ){
 					memo.gadget.find("#"+memo.idTooltipHolder).find("#"+memo.tooltipCLicked).click();
 				}
@@ -703,7 +660,6 @@
 		 */
 		tooltp_deleteTooltipLoadEvents: function(event){
 
-			console.log("deletetooltip");
 			var $target = $(event.target);
 			var $notebook = $target.closest("#notebook");
 			

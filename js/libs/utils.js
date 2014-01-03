@@ -104,7 +104,6 @@ var ABA_utils = {
 		}
 	},
 	doValidate: function (entry, solution){
-		console.log("compare string:"+entry+"//"+solution);
 		var i = ABA_utils.doCompareString(entry,solution);
 		if (i==false) return true;
 		return false;

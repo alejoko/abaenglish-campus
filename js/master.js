@@ -9,22 +9,17 @@ function callConnectionOn(){
 function callLogin(inResult){
     if(inResult != ""){
     	var result=inResult.split(":");
-    	console.log("***************** ID *********************"+result[0]);
         ABA_env.setIdLearner(result[0]);
     }
-    console.log("login ready");
 }
 function callConfirmed(){
-	console.log("callConfirmed");
 	masterActions.hideAbaPlayer();
 	masterActions.notyfyLoginReady();
 }  
 function callConfirmation(){
-	console.log("callConfirmation");
     masterActions.showPermissionConfirmation();
 }
 function callProxyResponse(inContent){   
-	console.log("SERVER CALL");
     ABA_env.storeRequestData(inContent);
 }
 // callback functions
@@ -124,11 +119,9 @@ var masterActions = {
 		 * Load the Overserver events related to this gadget
 		 */
 		loadObserverEvents: function(){
-			console.log("loadObserver");
 			$.subscribe("/masterEvents/objFlashReady", function(event) { 
 				var $store = masterActions.$gadget;
 				$store.data("objectFlashReady",true);
-				console.log("FIRE!!!!");
 				initUnit();
 			});	
 		},
@@ -186,7 +179,6 @@ var masterActions = {
 		
 		jumpSection: function(sSection){
 			var arrBreadCrumb  = ABA_env.getFirstPages();
-			console.log("targetBreadCrum:"+sSection);
 			if( sSection in arrBreadCrumb ){
 				masterActions.$gadget.find('#loadingWrapper').show();
 				masterActions.loadUnit(arrBreadCrumb[sSection]);
@@ -196,8 +188,6 @@ var masterActions = {
 		},
 		
 		setStepBreadCrumb: function(sSection){
-			console.log("setStepBreadCrumb:"+sSection);
-			console.log(masterActions.$gadget);
 			masterActions.$gadget.find(".breadcrum_selected").removeClass("breadcrum_selected");
 			masterActions.$gadget.find(".breadCrumbTextSelected").removeClass("breadCrumbTextSelected").find(".cufon").addClass("cufonBorder");
 			
@@ -256,12 +246,10 @@ var masterActions = {
 		},
 		
 		connectionOff: function(){
-			console.log("connectionoff");
 			 masterActions.$gadget.find("#frameNoConnection").show();
 		},
 		
 		connectionOn: function(){
-			console.log("connectionon");
 			 masterActions.$gadget.find("#frameNoConnection").hide();
 		},
 		
@@ -280,7 +268,6 @@ var masterActions = {
 			 masterActions.$gadget.find("#videoHolder").css("height","0");
 			 masterActions.$gadget.find("#"+studentActions.config.flashIdentifier).attr("height","0");
 			 masterActions.$gadget.find("#"+studentActions.config.flashIdentifier).css("height","0");
-			console.log("deleteplayer");
 		},
 		
 		showPermissionConfirmation: function(){
@@ -290,7 +277,6 @@ var masterActions = {
 			 masterActions.$gadget.find("#"+studentActions.config.flashIdentifier).attr("height","110px").attr("width","180px");
 			 masterActions.$gadget.find(masterActions.config.videoHolder).addClass("microPermissionHolder");
 			 masterActions.$gadget.find("#"+studentActions.config.flashIdentifier).addClass("microPermission");
-			console.log("showingconfirmation");
 		},
 	
 		loadVideoPlayer: function(inUnit){
@@ -320,7 +306,6 @@ var masterActions = {
 		},
 		loadFlashObject: function(){
 			 var flashObj =  null;
-			 console.log("loading ajax object");
 			 if (masterActions.detectFlashVer()) {
 				  flashObj = AC_FL_RunContent(
 							"src", 				"ABAPlayer2",			
@@ -355,16 +340,11 @@ var masterActions = {
 		},
 		
 		loadInfoProgressBar: function(data){
-				console.log("loadInfoProgressBar");
-				console.log(data);
 				studentActions.setUpGadgetIdentifier(studentActions.config.identifier);
 				var sum = 0;
 				var nIndex = 0;
 				$.each(data.Values, function(index){
-					console.log("new bar");
-					console.log(parseInt(this));
 					var nPercent = parseInt(this);
-					console.log(nPercent);
 					sum += nPercent;
 					nIndex++;
 					var graphicValue = Math.round( nPercent / 2 );
@@ -390,7 +370,6 @@ var masterActions = {
 			
 			delete studentActions;
 			
-			console.log("jump!!!!-->"+sAction);
 			$window.load(sAction,
 					  function(response, status, xhr){
 						  	switch(status){
@@ -399,9 +378,7 @@ var masterActions = {
 						  		break;
 						  		default:
 						  			var memo =   masterActions.$gadget.data();
-						  			console.log("!!!!!!!!!!!!!JUMPED!!!!!!!!!!!"+sPage+"");
 						  			if(memo.objectFlashReady){
-						  				console.log("objectflashready: true");
 						  				initUnit();
 						  			}
 						  			

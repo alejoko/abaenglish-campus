@@ -15,7 +15,6 @@ var studentActions  = {
 		
 			//Adds data from the call to the options object
 			studentActions.config = $.extend(studentActions.config, config);
-			console.log("unit instanciada con : "+studentActions.config.identifier);
 			//Set-Up main properties
 			studentActions.setUpGadgetIdentifier(studentActions.config.identifier);
 			// attach listener on start building;
@@ -36,11 +35,8 @@ var studentActions  = {
 		 * the identifier. The default value is the "body" tag.
 		 */
 		setUpGadgetIdentifier: function (id){
-			console.log("setupGadget");
-			console.log(id);
 			if (studentActions.config.identifier !== null){
 				studentActions.$gadget = $("#" + id);
-				console.log(studentActions.$gadget);
 			}else{
 				studentActions.$gadget = $("body");
 			}
@@ -76,24 +72,19 @@ var studentActions  = {
 				.delegate( "#arrows", "click", $.proxy(this.managePaginateWidgetButtons, this.target) )
 				.delegate( ".tooltipStarter", "hover", $.proxy(this.manageTootipStarterHoverEffects, this.target))
 				.delegate( ".tooltipStarter", "click", $.proxy(this.loadTooltip, this.target));
-			console.log("loadEvents");
-			console.log(studentActions.$gadget);
 		},
 		
 		attachListenerUnitReady: function(){
 			var sSectionUnit = null;
 			$.subscribe("/unitEvents/unitReady", function(event) { 
   				sSectionUnit = ABA_env.getSection();
-  				console.log("breadcrumb:"+sSectionUnit);
 	  			masterActions.setStepBreadCrumb(sSectionUnit);
 	  			$.unsubscribe("/unitEvents/unitReady");
 			});	
-				console.log("BreadCrumb listening to UNIT READY");
 		},
 	
 		notyfyUnitReady: function(){
 			$.publish("/unitEvents/unitReady"); 
-			console.log("UNIT READY -----> FIRE!!!!");
 		},
 	
 		/**
@@ -145,7 +136,6 @@ var studentActions  = {
 			
 				// delete current tooltip
 				studentActions.deleteTooltip();
-				console.log("loadTooltip");
 				$target.tipTip({
 						maxWidth: "auto", 
 						edgeOffset: 95, 
@@ -183,10 +173,7 @@ var studentActions  = {
 		
 		deleteTooltip: function(event){
 			var linkId = studentActions.$gadget.find(studentActions.config.tooltipHolderId).attr("linkid");
-			
-			console.log("trying to to delete: "+studentActions.config.tooltipHolderId);
-			console.log(linkId);
-			
+						
 			if (linkId != undefined) {
 				var $store = $("#"+linkId);
 				var memo = $("#"+linkId).data();
@@ -202,7 +189,6 @@ var studentActions  = {
 		},
 		
 		deleteTooltipLoadEvents: function(event){
-			console.log("deletetooltip");
 			studentActions.deleteTooltip(event);
 		},
 		
@@ -262,7 +248,6 @@ var studentActions  = {
 		 * Manage the effect related to the cliked blinking Tooltip Buttons
 		 */
 		startBlinkTooltipBtns: function(event){
-			console.log("blink");
 			var $target = $(event.target);
 			$target.parent().removeClass("buttonTooltip_audio_hold");
 			$target.parent().addClass("buttonTooltip_rollover");
@@ -276,7 +261,6 @@ var studentActions  = {
 		},
 		
 		stopBlinkTooltipBtns: function($target, event){
-			console.log("stopBlink");
 			var linkId = $(studentActions.config.tooltipHolderId).attr("linkId");
 			var $store = $("#"+linkId);
 			var memo = $("#"+linkId).data();
@@ -314,7 +298,6 @@ var studentActions  = {
 			var linkId = $tooltipHolder.attr("linkid");
 			var audioType = $tooltipHolder.attr("audiotype");
 			var okText = $tooltipHolder.attr("okText");
-			console.log($target);
 			var typeButton = $target.attr("id");
 			var $store = $("#"+linkId);
 			var memo = $("#"+linkId).data();
@@ -333,7 +316,6 @@ var studentActions  = {
 								$store.data("isClickedHear",true);
 								$store.data("tooltipCLicked","hear");
 								$store.data("cueFromServer",false);
-									console.log("hearing...");
 //									iconTimeoutHear = setTimeout(function(){$target.click();}, 60000);
 									studentActions.startBlinkTooltipBtns(event);
 									//TODO: diferent "demo" or "student" depends of record or play 
@@ -346,11 +328,9 @@ var studentActions  = {
 //									clearTimeout(iconTimeoutHear);
 //									alert("lo estoy parando yo1");
 									if(sSection=="GRAMMAR"){
-										console.log("notifify to server: audio hear")
 										studentActions.stopElement(true);
 										studentActions.$gadget.find("#"+linkId).css("text-decoration","underline");
 									} else {
-										console.log("DON'T notifify HEAR !!!");
 										studentActions.stopElement(false);
 									}
 							}
@@ -366,7 +346,6 @@ var studentActions  = {
 								$store.data("tooltipCLicked","record");
 								$store.data("cueFromServer",false);
 									studentActions.$gadget.find(studentActions.config.tooltipHolderId).addClass("keepAlive");
-									console.log("recording...");
 									studentActions.startBlinkTooltipBtns(event);
 									iconTimeoutRecord = setTimeout(function(){$target.click();}, 60000);
 									studentActions.startRecord(filename);
@@ -383,7 +362,6 @@ var studentActions  = {
 					break;
 					
 				case "compare":
-					console.log(sSection+"+"+typeButton);
 						switch(sSection){
 						
 								case "STUDY":
@@ -399,19 +377,15 @@ var studentActions  = {
 														$store.data("tooltipCLicked","compare");
 														$store.data("cueFromServer",false);
 														studentActions.$gadget.find(studentActions.config.tooltipHolderId).addClass("keepAlive");
-															console.log("compare....");
 															switch(memo.compareState){
 																case "step1":
-																	console.log("compares1");
 																	$store.data("compareState","step2");
 																	studentActions.startBlinkTooltipBtns(event);
 																	studentActions.startPlay(filename, audioType, "demo");
 																	break;
 																case "step2":
-																	console.log("compares2");
 																	break;
 																default:
-																	console.log("comparedefault");
 																	$store.data("compareState","step1");
 																	studentActions.startBlinkTooltipBtns(event);
 																	studentActions.startPlay(filename, audioType, "student");
@@ -513,7 +487,6 @@ var studentActions  = {
 		},
 		
 		stopElement: function(inNotify){
-			console.log("listen call stop");
 			PROXY_env.HTMLStopElement(inNotify);
 		},
 		
@@ -562,7 +535,6 @@ var studentActions  = {
 			var $target = $(event.target);
 			var sIdPaginate = $target.attr("id");
 			var sPage = $target.attr("page"); 
-			console.log("NEXT PAGE: >>>"+sPage);
 			switch(sIdPaginate){
 				case "previous":
 				case "next":

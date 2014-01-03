@@ -277,33 +277,14 @@ var ABA_env = {
 		this.MyDataWriting = new Array();
 		this.exercises = new Array();
 	},
-//	getTimerUnitByUser:function(){	
-//		var url_aba = "http://www.abaenglish.com/transactions/wgetTimerFollowup.php?id_learner="+this.getIdLearner()+"&unit="+this.getUnit();
-//		masterActions.SWFGetPlayer().SWFProxy(url_aba);
-//	},	
-	/*
-	loadScormStudendData:function() {
-		var url_aba = "http://www.abaenglish.com/transactions/wgetScormStudentData.php?id_learner="+this.getIdLearner()+"&unit="+this.getUnit();
-		masterActions.SWFGetPlayer().SWFProxy(url_aba);
-	},
-	*/
-//	loadScormAllOnload:function() {
-//		//id_learner unit page section
-//		var url_aba = "http://www.abaenglish.com/transactions/wgetScormAllOnload.php?id_learner="+this.getIdLearner()+"&unit="+this.getUnit()+"&page="+this.getPage()+"&section="+this.getSection();
-//		console.log("SWFProxy DATA REQUEST: "+url_aba);
-//		masterActions.SWFGetPlayer().SWFProxy(url_aba);
-//	},
 	responseSetUnitSectionEv: function (text_array){
 		var porcentajes=text_array[2]; 
 		masterActions.loadInfoProgressBar(this.dispacher("DataAll", porcentajes));
 //		this.loadScormStudendData(); 
 	},
 	dispacher: function(dataType,strData){
-		console.log("**DISPACHER**");
 		var arrData = strData.split(";");
 		var temp = null;
-		console.log("DATA1");
-		console.log(arrData);
 //		 build JSON define structure
 		var data = {};
 		data.Type = dataType;
@@ -363,7 +344,6 @@ var ABA_env = {
 		}
 		
 		return data;
-		console.log(data);
 	},
 	
 	//2;SITUATION;jperezmarweb_at_gmail_com;
@@ -384,8 +364,6 @@ var ABA_env = {
 		this.MyDataWritingFalse = text_array[7];
 		this.MyDataDictationFalse = text_array[8];
 		this.MyDataMinitest = text_array[2];
-		console.log("dispacher: executing switch");
-		console.log(text_array);
 					
 		switch(this.getSection()){
 			case "MINITEST":
@@ -396,25 +374,20 @@ var ABA_env = {
 				studentActions.loadMemoAudioListened(  this.dispacher("DataListened", this.MyDataListened)  );
 			break;
 			case "WRITING":
-				console.log("dispacher info in WRITING");
 				studentActions.loadMemoWritingInputTextFalse(  this.dispacher("dataWritingFalse", this.MyDataWritingFalse)  );	
 				studentActions.loadMemoWritingInputText(  this.dispacher("dataWriting", this.MyDataWriting)  );
 				studentActions.loadMemoAudioListened(  this.dispacher("DataListened", this.MyDataListened)  );
 			break;
 			case "DICTATION":
-				console.log("dispacher info in DICTATION");
 				studentActions.loadMemoInputTextFalse(  this.dispacher("dataDictationFalse", this.MyDataDictationFalse)  );	
 				studentActions.loadMemoInputText(  this.dispacher("dataDictation", this.MyDataDictation)  );
 			break;
 			case "GRAMMAR":
-				console.log("dispacher info in GRAMMAR");
 				studentActions.loadMemoAudioListened(  this.dispacher("DataListened", this.MyDataListened)  );
 			break;
 			case "SPEAKING":
 			case "STUDY":
 			case "NEWWORDS":
-				console.log("dispacher info in STUDY");
-				console.log("dispacher info in NEWWORDS");
 				studentActions.loadMemoAudioListened(  this.dispacher("DataListened", this.MyDataListened)  );
 				studentActions.loadMemoAudioRecorded(  this.dispacher("DataRecorded", this.MyDataRecorded)  );				 
 			break;
@@ -455,8 +428,6 @@ var ABA_env = {
 	
 	//<html><body>@4@66;0;125;0;0;0;0;0@</body></html>
 	storeRequestData: function (text) {
-		console.log("exe storeRequestData");
-		console.log("log of STORE REQUEST DATA:"+text);
 		text_array=[];
 		text_array = text.split("@");
 		if(text_array[1]){

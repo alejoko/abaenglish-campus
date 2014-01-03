@@ -24,14 +24,11 @@ var minitestActions = {
 		var nota = 0;
 		$collectionAnswers = $gadget.find("input[type='checkbox']:checked");
 		$collectionAnswers.each(function(index){
-			console.log($(this).attr("value"));
 			arrValues.push($(this).attr("value"));
 			totalAnswers++;
 			arrAnswerQuestions.push($(this).closest(".column_right").find(".questions").attr("value"));
-			console.log(arrAnswerQuestions);
 			nota += (arrValues[index]==arrAnswerQuestions[index])?1:0;
 		});
-		console.log(arrValues);
 
 		if(totalAnswers >= minitestActions.config.minRequiredNumAnswers){
 					
